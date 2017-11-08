@@ -2,8 +2,7 @@
 python commit_files.py
 
 # coverage map is c++ (not .js) for d54bb49a08e9 from adr using:
-#  adr raw_coverage --rev d54bb49a08e9 --path dirs.txt --quiet --no-perf
+adr raw_coverage --rev 4ea775c267be --no-perf --quiet --path dirs.txt
 
 # changes_files.json has 1000 changesets roughly from Oct 12-19, 2017
-python test_coverage.py --json coverage_map.json --changesets changes_files.json
-
+python missing_coverage.py --json coverage_map.json --changesets changes_files.json

@@ -39,7 +39,10 @@ def main(args=sys.argv[1:]):
     all_missing = []
     for rev in changesets:
         missing = []
+        matched = 0
+        total_files = 0
         for file in changesets[rev]:
+             total_files += 1
              # Known lack of coverage
              startswith = ['servo', 'mobile', 'third_party']
              endswith = ['.java', '.rs', '.mm', '.nsi', '.nsh']
@@ -75,8 +78,8 @@ def main(args=sys.argv[1:]):
              startswith = []
              endswith = ['.js', '.jsm']
              pattern = []
-             if skipfile(file, startswith, endswith, pattern):
-                 continue
+#             if skipfile(file, startswith, endswith, pattern):
+#                 continue
 
              # hacking out for current dataset:
              startswith = []
@@ -89,17 +92,22 @@ def main(args=sys.argv[1:]):
              startswith = []
              endswith = ['.cpp', '.h', '.cc']
              pattern = []
-#             if skipfile(file, startswith, endswith, pattern):
-#                 continue
+             if skipfile(file, startswith, endswith, pattern):
+                 continue
 
              if file not in coverage_map:
                  missing.append(file)
                  if file not in all_missing:
                      all_missing.append(file)
+             else:
+                 matched += 1
 
         if missing:
-            print "%s: %s" % (rev, missing)    
+            print "%s: %s, %s" % (rev, matched, missing)
+        elif matched > 0 and matched != total_files:
+            print "%s: %s/%s" % (rev, matched, total_files)
 
+    all_missing.sort()
     print len(all_missing)
 
 if __name__ == "__main__":
